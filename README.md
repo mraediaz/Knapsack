@@ -21,7 +21,7 @@ to the most optimal solution and each strategy's execution time. The three strat
 used are brute force, dynamic programming, and greedy.
 
 
-# Report Motivation and Background
+#Report Motivation and Background
 The 0/1 Knapsack problem is a classic problem in Computer Science whose applications
 can be found in multiple elds, such as Operations Research, Process Scheduling and Com-
 puter Networking. It is also a problem that appears in real-world decision-making, as the one
@@ -47,18 +47,19 @@ compare three dierent solutions: greedy, dynamic, and by brute force. The goal 
 report is to address two major issues: how close does each strategy come to the optimal
 solution, and how do the three strategies compare in terms of execution time.
 
-To better understand the terminology used, we provide the following denitions to our
+To better understand the terminology used, we provide the following definitions to our
 strategies:
- Brute Force: A trial and error method used to nd solutions through exhaustive
-eort. In other words, running through all possible choices to nd the most optimal
+1: Brute Force: A trial and error method used to and solutions through exhaustive
+effort. In other words, running through all possible choices to and the most optimal
 solution.
- Greedy Solution: We can assemble a globally optimal solution by making a lo-
+2: Greedy Solution: We can assemble a globally optimal solution by making a lo-
 cally optimal solution, called the greedy choice. In other words, choosing the option
 that looks best in the current position, without consideration to the results from sub-
 problems.
- Dynamic Programming: Like divide-and-conquer, dynamic programming solves
+3: Dynamic Programming: Like divide-and-conquer, dynamic programming solves
 problems by combining the solutions to sub-problems. This is especially useful when
 sub-problems share sub-problems.
-The 0/1 Knapsack problem is classied as NP-Complete, meaning that it is nondeter-
+
+The 0/1 Knapsack problem is classiffied as NP-Complete, meaning that it is nondeter-
 ministic in polynomial time. Due to this property, we do not expect a low-cost solution to
-the problem, and we can predict that each solution strategy will yield a dierent result.
+the problem, and we can predict that each solution strategy will yield a different result.
