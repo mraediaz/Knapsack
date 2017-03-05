@@ -1,0 +1,397 @@
+\documentclass[12pt]{article}
+
+\author{Melany Diaz}
+\title{Programming Assignment 3: 0/1 Knapsack}
+\date{\today}
+
+% math
+\usepackage{amsmath,amssymb}
+%\usepackage{amsthm} % uncomment to enable theorem environment
+
+\usepackage{listings}%used to present classes and java code
+
+\usepackage{indentfirst}
+
+\usepackage{graphicx}
+\graphicspath{{Pictures/}}
+\usepackage{float}
+
+% 1 inch margins
+\usepackage[margin=1in]{geometry}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{CS 215}
+\chead{Programming Assignment 3: 0/1 Knapsack}
+\rhead{Melany Diaz}
+
+% \includegraphics[]{InsertSortPhoto}
+
+\begin{document}
+	
+	\maketitle
+	
+	\begin{abstract}
+    
+    This report will be validating and analyzing the time complexity of three different strategies used for 0/1 Knapsack. We hope to compare how close each strategy gets to the most optimal solution and each strategy's execution time. The three strategies used are brute force, dynamic programming, and greedy.
+		
+	\end{abstract}
+	
+	\section*{MOTIVATION AND BACKGROUND}
+	The 0/1 Knapsack problem is a classic problem in Computer Science whose applications can be found in multiple fields, such as Operations Research, Process Scheduling and Computer Networking. It is also a problem that appears in real-world decision-making, as the one used to describe its premise: imagine a thief, whose knapsack holds only a certain amount of weight (defined as capacity \textit{c}). The thief has found \textit{n} items that they could steal, where each item has a certain weight and value. Unfortunately for the thief, their knapsack cannot hold all \textit{n} items and they must choose the perfect combination of items to steal to gain the most value from their theft. This is called a 0/1 Knapsack problem because each item may either be taken by the thief or left behind. \\
+	
+	There also exists a fractional knapsack problem, where our thief may take parts of items, rather than exclusively the whole item. To use another analogy, this problem could be illustrated by a test-taker determining which questions to answer. Questions that take less time to answer have a smaller weight in terms of points than questions that take longer. If the test-taker \textit{must} complete their answer to receive points, we would have a 0/1 knapsack problem. If they may receive points for partial credit, then this would be a fractional knapsack problem. \\
+	
+	Both 0/1 Knapsack and Fractional Knapsack illustrate the optimal-substructure property required for both greedy algorithms and dynamic programming. In this project, we will be focusing solely on the take-it-or-leave-it version of the problem. We will implement and compare three different solutions: greedy, dynamic, and by brute force. The goal of this report is to address two major issues: how close does each strategy come to the optimal solution, and how do the three strategies compare in terms of execution time.\\
+	
+	To better understand the terminology used, we provide the following definitions to our strategies: 
+	
+	\begin{itemize}
+		\item \textbf{Brute Force:} A trial and error method used to find solutions through exhaustive effort. In other words, running through all possible choices to find the most optimal solution. 
+		\item\textbf{Greedy Solution:} We can assemble a globally optimal solution by making a locally optimal solution, called the greedy choice. In other words, choosing the option that looks best in the current position, without consideration to the results from sub-problems.
+		\item\textbf{Dynamic Programming:} Like divide-and-conquer, dynamic programming solves problems by combining the solutions to sub-problems. This is especially useful when sub-problems share sub-problems.		
+	\end{itemize}
+	
+	The 0/1 Knapsack problem is classified as NP-Complete, meaning that it is nondeterministic in polynomial time. Due to this property, we do not expect a low-cost solution to the problem, and we can predict that each solution strategy will yield a different result. \\
+	
+	We also predict, \textit{a priori}, that the greedy strategy will not be very successful for the 0/1 Knapsack problem. This is because the greedy strategy solution finds the most optimal item \textit{at the time} for the thief to choose, without consideration of other items, or combination or items, that may be better. \\
+ 	
+	\section*{PROCEDURE} 
+	
+    In order to implement the three solutions (brute force, dynamic, and greedy) it is important to understand some details about each. These include their descriptions and applications to the problem, pre and post conditions,and their invariants.
+
+\subsection*{Brute Force}
+%description
+As the definition indicates, the brute force strategy tries all possible solutions and then chooses the most optimal. In this case, we must go through all of the items in the list, and find the combination of items that will accumulate the maximum value, but still fit within the capacity of the knapsack. For implementation and simplicity purposes, we will be limiting the amount of items in the list to $n = 15$.\\
+
+\textbf{Preconditions} The sizes of the price and weight arrays must be equal and greater than 0 and their elements must be positive integers. \\
+
+\textbf{Postconditions} The maximum value attainable with the given capacity.\\
+
+\textbf{Pseudocode:} \\
+\lstinputlisting[language = java, breaklines = true]{BruteForcePseudo.txt}
+\lstinputlisting[breaklines = true]{BRUTEFORCE.txt}
+
+\textbf{Invariant:} Since the invariant for this requires that we know the most optimal solution to begin with (in other words, run this method for the invariant) it would be redundant to use. So,  we will assume that the invariant is already asserted, thus confirming the initialization, maintenance and termination of it.\\
+
+Now that we know the implementation details, we conclude by writing an appropriate class that we may use for our study. An example of such class is shown in the figure bellow.
+
+\includegraphics[]{BruteForceCode}
+\includegraphics[]{BruteForceCode2}
+%picture of the code
+%----------------------------------------
+\subsection*{Dynamic Programming}
+%description
+
+\textbf{Preconditions} The sizes of the price and weight arrays must be equal and greater than 0 and their elements must be positive integers. \\
+
+\textbf{Postconditions} The maximum value attainable with the given capacity.\\
+
+\textbf{Pseudocode:} \\
+\lstinputlisting[language = java, breaklines = true]{DynamicPseudo.txt}
+\textbf{Invariant:} Since the invariant for this requires that we know the most optimal solution to begin with (in other words, run this method for the invariant) it would be redundant to use. So,  we will assume that the invariant is already asserted, thus confirming the initialization, maintenance and termination of it.\\
+
+Now that we know the implementation details, we conclude by writing an appropriate class that we may use for our study. An example of such class is shown in the figure bellow.
+
+\includegraphics[]{DynamicCode}
+%picture of the code
+%----------------------------------------
+\subsection*{Greedy Algorithm}
+%description
+
+As the definition indicated, the greedy algorithm will choose the most optimal solution at the current moment. In this case, we will form a price density array in non-ascending order, and then find the greatest value for the knapsack using the greedy premise. \\
+
+In order to form the price density array in non-ascending order, we will be using the HeapSort sorting algorithm written for a previous report. This sorting algorithm was chosen due to its faster run-time in comparison to other sorting methods, such as MergeSort, QuickSort, or InsertionSort. HeapSort, like MergeSort, has the same time complexity for its best, worst, and random cases ($O(n*ln_2(n))$). The reason that HeapSort was chosen over MergeSort, however is that even with the same time complexity, HeapSort tends to terminate before MergeSort, due to its leading constants. QuickSort was also a strong choice, however the worst-case for QuickSort yields a time complexity of ($O(n^2)$), therefore making HeapSort the strongest choice for this scenario.\\
+
+\textbf{Preconditions} The sizes of the price and weight arrays must be equal and greater than 0 and their elements must be positive integers. \\
+
+\textbf{Postconditions} The maximum value attainable with the given capacity.\\
+
+\textbf{Pseudocode:} \\
+\lstinputlisting[language = java, breaklines = true]{GreedyPseudo.txt}
+\textbf{Invariant:} Since the invariant for this requires that we know the most optimal solution to begin with (in other words, run this method for the invariant) it would be redundant to use. So,  we will assume that the invariant is already asserted, thus confirming the initialization, maintenance and termination of it.\\
+
+Now that we know the implementation details, we conclude by writing an appropriate class that we may use for our study. An example of such class is shown in the figure bellow.
+
+\includegraphics[]{GreedyCode}
+%picture of the code
+%----------------------------------------
+\subsection*{Method used for Comparisons}
+
+In order to compare the three methods, we will be generating a random list of items (defined by their price, $p_i$, and their weight $w_i$) and testing each solution using this list. To generate a reasonable solution, this list will be made of integers ranging from 5 to 100.\\
+
+As per the knapsack, we will use a constant capacity $c$ set to a weight of 100 ($c=100$.)
+
+%picture of the code
+
+\newpage
+\section*{TESTING} 
+	
+	
+	Program testing is the process used to help identify the correctness, completeness, and quality of a class. The process of testing involves executing a program with the intent of finding errors and bugs. One of the goals for this project was to find a way to create a test driver so that it exercised the program. The following table shows the tests the program went through, the expected results, the actual results, and the solution. \\
+	
+	
+	\begin{tabular}{|p{3.5cm}|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
+		\hline
+		Test & Expected Result & Actual Result & Remedy\\
+		\hline
+        Duplicate integers in price array & Program executes as usual& Issues with the reordering of the weight array (as explained in the Problems encountered) & modify the code responsible for reordering the weight array according with the price array\\
+        \hline
+        Duplicate integers in weight array&Program executes as usual & as expected 	& N/A\\
+        \hline
+        Having 0 items &Program executes as usual& As expected. This was use4ful for seeing which approach was initially quicker (when $n = 0$.) The results showed brute force as the fastest and greedy as the slowest& N/A\\
+        \hline
+        Having negative items& A negative array exception& As expected & N/A\\
+        \hline
+        Having negative integers in the price Array& An exception & Surprisingly, the array still compiled. Brute force and Dynamic gave 0 as the most optimal choice. Greedy, on the other hand, has our thief paying the store to steal it, as it showed the most optimal solution to be \$ -101 & N/A \\
+        \hline
+        Having negative integers in the weights array& An exception & As expected, an index out of bounds exception & N/A\\
+        \hline
+		
+	
+	\end{tabular}\newpage
+	
+	\subsection*{PROBLEMS ENCOUNTERED}
+	
+	As with any programming project, a programmer must be able to keep track of any problems encountered and of the solutions found to counter them. There were two main problems that were encountered during the development process. Following is a description of these and how I chose to tackle them. \\
+    
+The first problem began with translating the pseudocode of the Dynamic Programming approach into java. They dynamic approach must remain one-relative in order to properly execute. However, I had mistakenly changed all of the arrays to be zero-relative, therefore finding inaccurate results whenever I ran my code. After learning that the relative-ness of the arrays were so specific for this approach, it was an easy error to find and fix. \\
+
+The second problem occurred during the Greedy algorithm approach. This approach requires that the price array be sorted into non-ascending order. Because of this rearrangement of the elements, it is required, consequently, that the weight array be rearranged appropriately. I felt confident in the code I had originally written to do this, until I realized that this code would be ineffective if the price array ever had a duplicate integer. The original code can be seen in figure 1.  \\
+
+\begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{ERRORGreedyDubplicatePricesProblem}
+            \caption{Original code that gave erroneous results}
+    	\end{center}
+    \end{figure}
+    
+The error occurred when there was a duplicate in the price array can be seen in the following figure. The upper half shows the original price and weight arrays, and the bottowm half (the horizontal representation) shows the newly sorted price and weight arrays. As can be seen, originally there was an item worth \$84 with a weight of 54 lbs and a second item, also worth \$84, that weighed 95 lbs. The error can be seen in the display of the newly rearranged graphs, where both items worth \$84 now had an equal weight of 95lbs. 
+\begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{ERRORGreedyDubplicatePrices}
+            \caption{Console results displaying error}
+    	\end{center}
+    \end{figure}
+    
+    After this error was found, all that was left to do was find the code that was responsible and change it. The newly written and modified code can be seen in figure 3. 
+
+    
+    \begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{ERRORGreedyDubplicatePricesFix}
+            \caption{Modified code}
+    	\end{center}
+    \end{figure}
+	\pagebreak
+	
+	\section*{EXPERIMENTAL ANALYSIS AND ASYMPTOTIC RUN-TIME COMPARISON}
+	After confirming that the program meets its conditions, and that it produces the required results, we now must compare the run-time complexities of the three solutions with their asymptotic run-times. This is also the moment to compare the results of the three strategies to conclude which solutions yield the most optimal results.\\ 
+	
+	In order to test our solutions, we generated different lists of  $n$ items, where the lists contained the randomized weights and prices of each item. Each randomized weight and price was a positive integer between 5-100; this confirmed that our tests aligned with the preconditions required by each strategy. To best compare the time complexity of our results, we plotted the time behavior for each case as a function of $n$. Similarly, to best compare the results of each case, we plotted their answers. Our results are described in the following sections.\\ 
+
+	
+	\subsection*{Brute Force}
+    
+    The Brute Force strategy requires that the thief must check every combination possible and then choose the most optimal. The time complexity and results of this strategy are explained in the following sections.
+    
+    \subsubsection*{Time Complexity}
+      
+      Notice, in the code for the Brute Force strategy, the for-loop inside the while-loop. Due to these nested loops, it doesn't come to a surprise that the time complexity for Brute Force resembles $O(n^2)$ Asymptotic time.
+     
+    \begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{BruteForceLoops}
+            \caption{Code for Brute Force displaying nested loops}
+    	\end{center}
+    \end{figure}
+    
+  It is interesting how the distance between each iteration begins to increase substantially after $n > 25$. It is also interesting that the time analysis of this strategy shows no outliers in its outcome. The fact that there aren't any outliers clearly displayed is incentive enough to explore what this graph may look like from a closer perspective. The  figure following shows the same graph, but with a more specific scale for the y-axis.
+    
+   	\begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{BruteForceTime}
+            \caption{Time Complexity of Brute Force Displaying similarities to $O(n^2)$ complexity. }
+    	\end{center}
+    \end{figure}
+    
+    Note how the close up displays an outlier that had not shown before, at $ n = 9$.
+    
+    \begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{BruteForceTimeClose}
+            \caption{Closer look at the duration of Brute Force}
+    	\end{center}
+    \end{figure}
+    
+   
+    \subsubsection*{Results}
+    
+    The results of the Brute Force algorithm are shown in the following figure. These results represent the total value of the most optimal combination of items that the thief could have taken.
+    
+       	\begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{BruteForceValue}
+            \caption{Value of most optimal solution}
+    	\end{center}
+    \end{figure}
+    
+    %--------------------------------------------------
+	
+	\subsection*{Dynamic Programming}
+	
+    The dynamic solution to the 0/1 Knapsack problem takes a divide-and-conquer approach towards finding the solution. The following sections will describe what we found when we used this approach to find the most optimal solution to the problem.
+    
+    \subsubsection*{Time Complexity} 
+    
+    The following figure displays the duration that it took for this approach to find the most optimal solution for a certain amount of items $n$. Notice how at first, when $n <= 8$ the times appear to be very erratic: increasing in an unpredictable manner. However, after $n = 9 $ the results seem to become less unstable, and begin to display a more linear pattern.
+    
+       	\begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{DynamicTime}
+            \caption{Time Complexity of Dynamic Programming}
+    	\end{center}
+    \end{figure}
+    
+    \subsubsection*{Results}
+    
+    The results of the Brute Force algorithm are shown in the following figure. These results represent the total value of the most optimal combination of items that the thief could have taken.
+    
+       	\begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{DynamicValue}
+           \caption{Value of most optimal solution}
+    	\end{center}
+    \end{figure}
+    
+    %--------------------------------------------------
+    \subsection*{Greedy Algorithm}
+    
+    The greedy algorithm for the 0/1 Knapsack takes an interesting approach of choosing the most valuable item \textit{at the time} for the thief to take in their knapsack. Of the three strategies, this approach was the most unpredictable, further confirming our suspicions that the greedy algorithm isn't effective for this problem. 
+    
+    \subsubsection*{Time Complexity}
+    
+   The following figure displays the duration that it took for this approach to find the most optimal solution for a certain amount of items $n$. Notice how at first, this appears to be extremely linear, with a remarkable exception when $n = 0$.  
+    
+    \begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{GreedyTime}
+            \caption{Time Complexity of Greedy Algorithm}
+    	\end{center}
+    \end{figure}
+    
+    This second figure shows what happens when we take a closer look to the duration of the greedy algorithm. Notice how now, the results tend to steadily incline, until $n = 16$ where the results become more unpredictable. 
+    
+     \begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{GreedyTimeClose}
+            \caption{A Closer Look to the Time Complexity of Greedy Algorithm}
+    	\end{center}
+    \end{figure}
+    
+    \subsubsection*{Results}
+    
+    The results of the Brute Force algorithm are shown in the following figure. These results represent the total value of the most optimal combination of items that the thief could have taken.
+    
+    
+   \begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{GreedyValue}            
+            \caption{Value of most optimal solution}
+    	\end{center}
+    \end{figure}
+    
+    %--------------------------------------------------
+    
+    \subsection*{Comparison of all Strategies}
+    
+    In order to best compare the three strategies, to find out which was the most efficient in terms of time and which gave the desired solutions, it is best to see them side-by-side. The following figures display the same results as above but in unison.
+    
+    \subsubsection*{Time Complexity}  
+    
+    As can be seen in the following figure, the greedy algorithm stayed consistently bellow 2000000 nanoseconds (aside for the outlier when $n = 0 $ On the other hand the brute force approach can be seen quickly becoming the slowest of the strategies, as it can be seen steadily increasing the graph.
+    
+    \begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{AllTimeFar}
+            \caption{Time Complexities of each approach}
+    	\end{center}
+    \end{figure}
+    
+    Even though the above figure shows the three approaches, greedy and brute force hide the durations of the dynamic approach. In order to see these results, we decided to close in on the graph, and expose the results for dynamic programming.
+    
+   \begin{figure}[H]
+		\begin{center}    
+    		\includegraphics[]{AllTimeClose}
+            \caption{Time Complexities of each approach}
+    	\end{center}
+    \end{figure}
+    
+    As can be seen in the above figure, Dynamic programming \textit{begins} as the slowest of the three, but consistently stays near the time results for the greedy algorithm once the brute force approach surpassed it. 
+    
+    
+    
+    \subsubsection*{Results}
+    
+    As can be seen in the following figure, the Brute Force and Dynamic approaches gave the same answer to what the total value of the most optimal knapsack would be. On the other hand, and as predicted, the brute force approach occasionally gave solutions that were less than the actual optimal answer. 
+    
+ 	\begin{figure}[H]
+		\begin{center}  
+        	\includegraphics[]{AllValue}
+    	\end{center}
+    \end{figure}
+    
+    
+    \subsubsection*{Results}
+    
+    %--------------------------------------------------
+	
+	\section*{CONCLUSIONS}
+	
+    After constructing a knapsack program that implemented the brute force, dynamic and greedy algorithm solutions, we were able to analyze and compare the run-time behaviors of each strategy. We have found that The dynamic programming gives the most optimal solution due to its it's speed compared to the brute force option, and the fact that the greedy algorithm didn't yield the most beneficial results. With a better understanding of each solution strategy, we have learned how to generate different complexities, implement and scrutinize a class so that it surpasses an intensive testing phase, and have understood the different algorithms used to solve the 0/1 knapsack problem. \\
+    
+    We predicted, \textit{a priori}, that the greedy strategy will not be very successful for the 0/1 Knapsack problem.  After testing each solution we found that our predictions were confirmed, and that the greedy algorithm does not yield the desired solution.
+	\pagebreak
+	
+	\section*{APPENDIX A: Main Class}
+	The following is the Java class written for the main class. 
+	
+	\hrulefill 
+	\lstinputlisting[language=java, breaklines = true]{Knapsack.txt}
+	\pagebreak
+	
+	\section*{Appendix B: BruteForce }
+	
+	The following is the Java class written for Brute Force strategy.
+    
+	\hrulefill 
+	\lstinputlisting[language=java, breaklines = true]{BruteForce.txt}
+	\pagebreak
+	
+	\section*{Appendix C: Greedy Class}
+	
+	The following is the Java class written for the Greedy Algorithm.
+	
+	\hrulefill 
+ 	\lstinputlisting[language=java, breaklines = true]{Greedy.txt}
+	\pagebreak
+	
+	\section*{Appendix C: Dynamic Class}
+	
+	The following is the Java class written for the Dynamic Programming strategy.  \\
+	
+	\hrulefill 
+ 	\lstinputlisting[language=java, breaklines = true]{Dynamic.txt}
+
+
+ \pagebreak
+	\section*{REFERENCES}
+	
+	[1]Cormen, Thomas H. Introduction to algorithms. MIT press, 2009.\\
+	
+	[2]	Rouse, Margaret. "What Is Brute Force Cracking? - Definition from WhatIs.com." SearchSecurity. July 2006. Accessed March 07, 2016. http://searchsecurity.techtarget.com/definition/brute-force-cracking.\\
+	
+	
+	
+
+\end{document}

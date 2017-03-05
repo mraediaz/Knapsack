@@ -1,0 +1,55 @@
+RESET(x)
+
+let i = 0
+let overflow = false
+
+while i < x.length
+	x[i] = 0
+	i++
+
+
+	
+
+BUMP(x)
+
+let i = x.length -1
+let overflow = true
+
+while ((i >= 0 and overflow))
+	if x[i] = 1
+		x[i] = 0
+
+	else
+		x[i] = 1
+		overflow = false
+
+	i--
+
+
+
+BRUTE-FORCE(c,p,w,n)
+
+let p[0...n-1] be a new array
+
+RESET(p)
+
+While the counter hasn't overflowed
+	for(int i = 0 to n-1)
+		if p[i] = 1
+			currentWeight = currentWeight + w[i]
+		if currentWeight <= c
+			currentValue = currentValue + p[i]
+			if currentValue > maxValue
+				maxValue = currentValue
+		else
+			currentValue = 0
+
+	currentWeight = 0
+	currentValue = 0
+
+	if the counter has't overflowed
+		BUMP(p)
+
+
+
+

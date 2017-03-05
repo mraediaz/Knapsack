@@ -1,0 +1,26 @@
+DYNAMIC (c, p, w, n)
+
+let f[0...n+1][0...c+1] be a new array of integers
+let k[0...n+1][0...c+1] be a new array of booleans
+
+for (i = 1 to n)
+    for (w = 1 to c)
+        f1 = f[i - 1][w]
+
+        f2 = -infinity
+        if (w[i] <= w)
+            f2 = p[i] + f[i-1][w-w[i]]
+        f[i][w] = max(f1, f2)
+        k[i][w] = f2>f1
+
+let b[0...n+1] be a new array of booleans
+for (int m = n to 0)
+    if k[m][c]
+        t[m] = true
+        c = c -w[m]
+    else
+        t[m] = false
+
+for (int i = 0 to t.length)
+    if t[i]
+        maxValue = maxValue + p[i]

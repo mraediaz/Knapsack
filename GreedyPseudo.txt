@@ -1,0 +1,13 @@
+GREEDY(c, p, w, n)
+
+sort the p in non-ascending order and rearrange w accordingly 
+so price index alligns with weight index
+
+let currentWeight = 0
+let w = 0
+
+while currentWeight <= c AND w < n
+    if newWeights[w] <= (c - currentWeight)
+        currentWeight = currentWeight + newWeights[w]
+        maxValue = maxValue + p[w]
+    w++
