@@ -23,10 +23,10 @@ used are brute force, dynamic programming, and greedy.
 
 #Report Motivation and Background
 The 0/1 Knapsack problem is a classic problem in Computer Science whose applications
-can be found in multiple elds, such as Operations Research, Process Scheduling and Com-
+can be found in multiple fields, such as Operations Research, Process Scheduling and Com-
 puter Networking. It is also a problem that appears in real-world decision-making, as the one
 used to describe its premise: imagine a thief, whose knapsack holds only a certain amount
-of weight (dened as capacity c). The thief has found n items that they could steal, where
+of weight (defined as capacity c). The thief has found n items that they could steal, where
 each item has a certain weight and value. Unfortunately for the thief, their knapsack cannot
 hold all n items and they must choose the perfect combination of items to steal to gain the
 most value from their theft. This is called a 0/1 Knapsack problem because each item may
@@ -43,7 +43,7 @@ sack problem.
 Both 0/1 Knapsack and Fractional Knapsack illustrate the optimal-substructure prop-
 erty required for both greedy algorithms and dynamic programming. In this project, we will
 be focusing solely on the take-it-or-leave-it version of the problem. We will implement and
-compare three dierent solutions: greedy, dynamic, and by brute force. The goal of this
+compare three different solutions: greedy, dynamic, and by brute force. The goal of this
 report is to address two major issues: how close does each strategy come to the optimal
 solution, and how do the three strategies compare in terms of execution time.
 
